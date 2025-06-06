@@ -3,7 +3,7 @@
 ## Clone the repository
 
 ```
-git clone https://github.com/your-username/languages-app.git
+git clone https://github.com/RisaGithub/languages-app.git
 cd languages-app
 ```
 
