@@ -135,7 +135,7 @@ def get_glosbe_translations(
                     translations[part_of_speech].append(translation_entry)
                     found_pos = True
                 elif part_of_speech.split()[0] in PARTS_OF_SPEECH:
-                    translations[part_of_speech].append(translation_entry)
+                    translations[part_of_speech.split()[0]].append(translation_entry)
                     found_pos = True
 
             if not found_pos:
