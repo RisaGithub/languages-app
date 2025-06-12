@@ -51,6 +51,8 @@ class Translation(models.Model):
     part_of_speech = models.CharField(max_length=50, null=True, blank=True)
     approved = models.BooleanField(default=False)
 
+    popularity = models.IntegerField(default=0)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -58,6 +60,30 @@ class Translation(models.Model):
 
     def __str__(self):
         return f"{self.text} ({self.language.iso_639_1 or self.language.iso_639_3})"
+
+
+class ExampleSentencePair(models.Model):
+    word = models.ForeignKey(
+        "Word", on_delete=models.CASCADE, related_name="sentence_pairs"
+    )
+    translation = models.ForeignKey(
+        Translation, related_name="example_pairs", on_delete=models.CASCADE
+    )
+
+    # Source sentence
+    source_text = models.TextField()
+    source_word_start_index = models.IntegerField()
+    source_word_end_index = models.IntegerField()
+
+    # Translated sentence
+    translated_text = models.TextField()
+    translated_word_start_index = models.IntegerField()
+    translated_word_end_index = models.IntegerField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Pair for {self.word.text}: {self.source_text[:40]} / {self.translated_text[:40]}"
 
 
 class UserTranslation(models.Model):
