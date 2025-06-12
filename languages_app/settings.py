@@ -1,3 +1,4 @@
+import dj_database_url
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -65,10 +66,9 @@ WSGI_APPLICATION = "languages_app.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.parse(
+        "postgresql://languages_db_narh_user:jWtkCoDVjBMBDCBtJXBmTmrlvaDyATMf@dpg-d159ahre5dus739dlaf0-a.oregon-postgres.render.com/languages_db_narh"
+    )
 }
 
 
