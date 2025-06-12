@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "django_extensions",
+    "languages_app",
     "users",
     "words",
 ]
