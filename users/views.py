@@ -25,9 +25,9 @@ class CreateAnonymousUserView(APIView):
 
 class AddUserTranslationView(APIView):
     def post(self, request):
-        anonymous_id = request.data.get("anonymous_id")
-        word_text = request.data.get("word_text")
-        translation_text = request.data.get("translation_text")
+        anonymous_id = request.query_params.get("anonymous_id")
+        word_text = request.query_params.get("word_text")
+        translation_text = request.query_params.get("translation_text")
 
         # Validate input
         missing_fields = []
@@ -40,7 +40,7 @@ class AddUserTranslationView(APIView):
 
         if missing_fields:
             return Response(
-                {"error": f"Missing required parameters: {', '.join(missing_fields)}"},
+                {"error": f"Missing these required query parameters: {', '.join(missing_fields)}"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
