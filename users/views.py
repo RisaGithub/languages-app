@@ -8,13 +8,11 @@ from django.contrib.auth.models import User
 
 class CreateAnonymousUserView(APIView):
     def post(self, request):
-        # Create a new user without username/password
         user = User.objects.create()
         user.set_unusable_password()
         user.save()
 
-        # Create associated UserProfile (if not auto-created via signal)
-        profile = UserProfile.objects.create(user=user)
+        profile = user.profile  # Automatically created via signal
 
         return Response(
             {"user_id": user.id, "anonymous_id": str(profile.anonymous_id)},

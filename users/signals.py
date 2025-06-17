@@ -3,7 +3,10 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from .models import UserProfile
 
+
 @receiver(post_save, sender=User)
-def create_profile(sender, instance, created, **kwargs):
+def create_user_profile_and_set_username(sender, instance, created, **kwargs):
     if created:
-        UserProfile.objects.create(user=instance)
+        profile = UserProfile.objects.create(user=instance)
+        instance.username = str(profile.anonymous_id)
+        instance.save()
