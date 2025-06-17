@@ -1,3 +1,4 @@
+import uuid
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,11 +9,13 @@ from django.contrib.auth.models import User
 
 class CreateAnonymousUserView(APIView):
     def post(self, request):
-        user = User.objects.create()
+        # Create user with temporary unique username to satisfy constraints
+        temp_username = f"temp_{uuid.uuid4().hex[:30]}"
+        user = User.objects.create(username=temp_username)
         user.set_unusable_password()
-        user.save()
+        user.save()  # `post_save` signal runs, creates profile, sets real username
 
-        profile = user.profile  # Automatically created via signal
+        profile = user.profile  # Created via signal
 
         return Response(
             {"user_id": user.id, "anonymous_id": str(profile.anonymous_id)},

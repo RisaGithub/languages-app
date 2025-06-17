@@ -8,5 +8,9 @@ from .models import UserProfile
 def create_user_profile_and_set_username(sender, instance, created, **kwargs):
     if created:
         profile = UserProfile.objects.create(user=instance)
-        instance.username = str(profile.anonymous_id)
-        instance.save()
+        new_username = str(profile.anonymous_id)
+
+        if instance.username != new_username:
+            instance.username = new_username
+            # Use update to avoid re-triggering signals
+            User.objects.filter(pk=instance.pk).update(username=new_username)
