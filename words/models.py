@@ -95,7 +95,7 @@ class UserTranslation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("user", "word")
+        unique_together = ("user", "word", "translation")
 
     def __str__(self):
         return f"{self.word.text} for {self.user.username or self.user.id}"

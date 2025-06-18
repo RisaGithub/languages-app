@@ -30,8 +30,8 @@ def available_routes_view(request):
         {
             "name": "Добавить слово-перевод в словарь",
             "method": "POST",
-            "route_template": "/api/users/add-translation/?anonymous_id=...&word_text=...&translation_text=...",
-            "route_example": f"{base_url}/api/users/add-translation/?anonymous_id=742c7560-9079-4f35-8c10-43dd1996b312&word_text=hello&translation_text=привет",
+            "route_template": "/api/users/add-translation/?anonymous_id=...&word_text=...&translation_text=...&source_language=...&target_language=...",
+            "route_example": f"{base_url}/api/users/add-translation/?anonymous_id=742c7560-9079-4f35-8c10-43dd1996b312&word_text=hello&translation_text=привет&source_language=en&target_language=ru",
         },
     ]
 
