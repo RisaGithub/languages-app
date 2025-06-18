@@ -1,10 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.shortcuts import get_object_or_404
-from users.models import UserProfile
-from .models import UserTranslation
-from .serializers import UserTranslationSerializer
 
 from words.utils.parsers.glosbe import get_glosbe_translations
 from .utils.db.add_translations_to_db import add_translations_to_database
@@ -67,18 +63,3 @@ class TranslateWordView(APIView):
                 {"error": str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
-
-
-class UserTranslationsByUUID(APIView):
-    def get(self, request, uuid):
-        try:
-            user_profile = UserProfile.objects.get(anonymous_id=uuid)
-        except UserProfile.DoesNotExist:
-            return Response(
-                {"error": "User with this UUID was not found."},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
-        translations = UserTranslation.objects.filter(user=user_profile.user)
-        serializer = UserTranslationSerializer(translations, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)

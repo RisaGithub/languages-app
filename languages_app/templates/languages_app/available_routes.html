@@ -1,102 +1,141 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 
 <head>
-	<title>Available Routes</title>
+	<meta charset="UTF-8" />
+	<title>Доступные маршруты API</title>
 	<style>
+		:root {
+			--primary-color: #2c3e50;
+			--secondary-color: #3498db;
+			--bg-color: #f0f2f5;
+			--card-bg: #ffffff;
+			--shadow-color: rgba(0, 0, 0, 0.1);
+		}
+
 		body {
-			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-				Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-			background-color: #f9f9f9;
-			color: #333;
+			margin: 0;
+			padding: 0;
+			background-color: var(--bg-color);
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			color: var(--primary-color);
+		}
+
+		.container {
+			max-width: 1100px;
 			margin: 40px auto;
-			max-width: 800px;
-			padding: 0 20px;
+			padding: 30px;
+			background-color: var(--card-bg);
+			border-radius: 12px;
+			box-shadow: 0 4px 12px var(--shadow-color);
 		}
 
-		h2 {
-			color: #2c3e50;
-			border-bottom: 2px solid #2980b9;
-			padding-bottom: 6px;
-			margin-bottom: 20px;
-			font-weight: 600;
-		}
-
-		ul {
-			list-style-type: disc;
-			padding-left: 20px;
+		h1 {
+			text-align: center;
+			color: var(--primary-color);
 			margin-bottom: 40px;
+			font-size: 2em;
 		}
 
-		li {
-			margin-bottom: 12px;
-			line-height: 1.5;
+		.route-block {
+			padding: 5px 0;
+		}
+
+		.route-block h2 {
+			margin: 0 0 10px 0;
+			color: rgb(98, 98, 98);
+			font-size: 1.4em;
+		}
+
+		.route-block code,
+		.route-block a {
+			display: block;
+			margin: 5px 0 10px 0;
 		}
 
 		code {
-			display: block;
-			background-color: #eee;
-			padding: 8px 12px;
-			border-radius: 4px;
-			font-family: "Courier New", Courier, monospace;
-			overflow-x: auto;
-			user-select: all;
+			background: #eef1f5;
+			padding: 6px 10px;
+			border-radius: 5px;
+			font-size: 1.1rem;
+			word-break: break-word;
+		}
+
+		a {
+			color: var(--secondary-color);
+			text-decoration: none;
+			font-size: 1.1rem;
+			word-break: break-word;
 		}
 
 		a:hover {
 			text-decoration: underline;
 		}
+
+		hr {
+			border: none;
+			border-top: 1px solid #ccc;
+			margin: 20px 0;
+		}
+
+		@media (max-width: 600px) {
+			.container {
+				padding: 20px;
+			}
+
+			h1 {
+				font-size: 1.5em;
+			}
+
+			.route-block h2 {
+				font-size: 1.2em;
+			}
+		}
+
+		.route-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.route-header h2 {
+			margin: 0;
+			color: rgb(98, 98, 98);
+			font-size: 1.4em;
+		}
+
+		.route-header code {
+			font-size: 1rem;
+			white-space: nowrap;
+		}
 	</style>
 </head>
 
 <body>
-	<h2>Admin</h2>
-	<ul>
-		<li>
-			Админка<br>
-			<a href="{{ base_url }}/admin" target="_blank" rel="noopener noreferrer">
-				<code>{{ base_url }}/admin</code>
-			</a>
-		</li>
-	</ul>
-	<h2>Example routes</h2>
-	<ul>
-		<li>
-			Перевод слова (GET)<br>
-			<a href="{{ base_url }}/api/words/translate/?word=hello&source_language=en&target_language=ru"
-				target="_blank" rel="noopener noreferrer">
-				<code>{{ base_url }}/api/words/translate/?word=hello&source_language=en&target_language=ru</code>
-			</a>
-		</li>
-		<li>
-			Получить слова, добавленные юзером (GET)<br>
-			<a href="{{ base_url }}/api/words/user-translations-by-uuid/742c7560-9079-4f35-8c10-43dd1996b312/" target="_blank"
-				rel="noopener noreferrer">
-				<code>{{ base_url }}/api/words/user-translations-by-uuid/742c7560-9079-4f35-8c10-43dd1996b312/</code>
-			</a>
-		</li>
-		<li>
-			Получить анонимный ID (POST)<br>
-			<a href="{{ base_url }}/api/users/create-anonymous/" target="_blank" rel="noopener noreferrer">
-				<code>{{ base_url }}/api/users/create-anonymous/</code>
-			</a>
-		</li>
-		<li>
-			Добавить слово-перевод в словарь (POST)<br>
-			<a href="{{ base_url }}/api/users/add-translation/?anonymous_id=...&word_text=...&translation_text=..."
-				target="_blank" rel="noopener noreferrer">
-				<code>{{ base_url }}/api/users/add-translation/?anonymous_id=...&word_text=...&translation_text=...</code>
-			</a>
-		</li>
-	</ul>
-
-	<h2>Available Routes</h2>
-	<ul>
+	<div class="container">
+		<h1>Доступные маршруты API</h1>
 		{% for route in routes %}
-		<li>{{ route }}</li>
-		{% endfor %}
-	</ul>
+		<div class="route-block">
+			<div class="route-header">
+				<h2>{{ route.name }}</h2>
+				{% if route.method %}
+				<code>{{ route.method }}</code>
+				{% endif %}
+			</div>
 
+			{% if route.route_template %}
+			<code>{{ route.route_template }}</code>
+			{% endif %}
+			{% if route.route_example %}
+			<a href="{{ route.route_example }}" target="_blank">{{ route.route_example }}</a>
+			{% endif %}
+		</div>
+		{% if not loop.last %}
+		<hr>
+		{% endif %}
+		{% endfor %}
+	</div>
 </body>
 
 </html>

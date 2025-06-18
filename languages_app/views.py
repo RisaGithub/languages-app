@@ -1,17 +1,41 @@
 from django.http import HttpResponse
 from django.template import loader
-from django.urls import get_resolver
+
 
 def available_routes_view(request):
-	routes = []
-	url_patterns = get_resolver().url_patterns
+    base_url = request.build_absolute_uri("/")[:-1]  # removes trailing slash
+    routes = [
+        {
+            "name": "Админка",
+            "route_example": f"{base_url}/admin",
+        },
+        {
+            "name": "Перевод слова",
+            "method": "GET",
+            "route_template": "/api/words/translate/?word=...&source_language=...&target_language=...",
+            "route_example": f"{base_url}/api/words/translate/?word=hello&source_language=en&target_language=ru",
+        },
+        {
+            "name": "Получить слова, добавленные юзером",
+            "method": "GET",
+            "route_template": "/api/users/user-translations-by-uuid/...",
+            "route_example": f"{base_url}/api/users/user-translations-by-uuid/742c7560-9079-4f35-8c10-43dd1996b312/",
+        },
+        {
+            "name": "Получить анонимный ID",
+            "method": "POST",
+            "route_template": "/api/users/create-anonymous/",
+            "route_example": f"{base_url}/api/users/create-anonymous/",
+        },
+        {
+            "name": "Добавить слово-перевод в словарь",
+            "method": "POST",
+            "route_template": "/api/users/add-translation/?anonymous_id=...&word_text=...&translation_text=...",
+            "route_example": f"{base_url}/api/users/add-translation/?anonymous_id=742c7560-9079-4f35-8c10-43dd1996b312&word_text=hello&translation_text=привет",
+        },
+    ]
 
-	for pattern in url_patterns:
-		try:
-			routes.append(str(pattern.pattern))
-		except:
-			pass
-
-	base_url = request.build_absolute_uri('/')[:-1]  # removes trailing slash
-	template = loader.get_template('languages_app/available_routes.html')
-	return HttpResponse(template.render({'routes': routes, 'base_url': base_url}, request))
+    template = loader.get_template("languages_app/available_routes.html")
+    return HttpResponse(
+        template.render({"routes": routes, "base_url": base_url}, request)
+    )
