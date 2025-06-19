@@ -1,5 +1,5 @@
-from words.models import ExampleSentencePair
-from words.models import Language, Word, Translation
+from words.models import ExampleSentencePair, Language, Word, Translation
+from django.db.models import Q
 
 
 def add_translations_to_database(
@@ -16,18 +16,28 @@ def add_translations_to_database(
 
     for part_of_speech, translations in translations_dict.items():
         for translation_data in translations:
-            translation, _ = Translation.objects.get_or_create(
+            translation_text = translation_data["translation"]
+            popularity = translation_data["popularity"]
+
+            # Try to find existing translation first
+            translation = Translation.objects.filter(
                 word=word,
                 language=target_lang,
-                text=translation_data["translation"],
-                popularity=translation_data["popularity"],
-                defaults={"part_of_speech": part_of_speech},
-            )
+                text=translation_text,
+            ).first()
+
+            if not translation:
+                translation = Translation.objects.create(
+                    word=word,
+                    language=target_lang,
+                    text=translation_text,
+                    popularity=popularity,
+                    part_of_speech=part_of_speech,
+                )
 
             source = translation_data.get("source_example_sentence")
             translated = translation_data.get("translated_example_sentence")
 
-            # Only create example pair if both are available
             if source and translated:
                 ExampleSentencePair.objects.get_or_create(
                     word=word,
