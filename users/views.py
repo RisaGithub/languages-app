@@ -128,3 +128,37 @@ class UserTranslationsByUUID(APIView):
         translations = UserTranslation.objects.filter(user=user_profile.user)
         serializer = UserTranslationSerializer(translations, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UserTranslationsByUUIDForWord(APIView):
+    def get(self, request):
+        uuid = request.query_params.get("uuid")
+        source_language = request.query_params.get("source_language")
+        target_language = request.query_params.get("target_language")
+        word = request.query_params.get("word")
+
+        if not all([uuid, source_language, target_language, word]):
+            return Response(
+                {
+                    "error": "Missing required parameters: uuid, source_language, target_language, or word."
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            user_profile = UserProfile.objects.get(anonymous_id=uuid)
+        except UserProfile.DoesNotExist:
+            return Response(
+                {"error": "User with this UUID was not found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        translations = UserTranslation.objects.filter(
+            user=user_profile.user,
+            translation__word__language__iso_639_1=source_language,
+            translation__language__iso_639_1=target_language,
+            word__text__iexact=word,
+        )
+
+        serializer = UserTranslationSerializer(translations, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -10,6 +10,12 @@ def available_routes_view(request):
             "route_example": f"{base_url}/admin",
         },
         {
+            "name": "Получить анонимный ID",
+            "method": "POST",
+            "route_template": "/api/users/create-anonymous/",
+            "route_example": f"{base_url}/api/users/create-anonymous/",
+        },
+        {
             "name": "Перевод слова",
             "method": "GET",
             "route_template": "/api/words/translate/?word=...&source_language=...&target_language=...",
@@ -22,10 +28,10 @@ def available_routes_view(request):
             "route_example": f"{base_url}/api/users/user-translations-by-uuid/742c7560-9079-4f35-8c10-43dd1996b312/",
         },
         {
-            "name": "Получить анонимный ID",
-            "method": "POST",
-            "route_template": "/api/users/create-anonymous/",
-            "route_example": f"{base_url}/api/users/create-anonymous/",
+            "name": "Получить добавленные юзером в его словарь переводы для определенного слова",
+            "method": "GET",
+            "route_template": "/api/users/user-translations-by-uuid-for-word/?uuid=...&word=...&source_language=...&target_language=...",
+            "route_example": f"{base_url}/api/users/user-translations-by-uuid-for-word/?uuid=742c7560-9079-4f35-8c10-43dd1996b312&word=hello&source_language=en&target_language=ru",
         },
         {
             "name": "Добавить слово-перевод в словарь",

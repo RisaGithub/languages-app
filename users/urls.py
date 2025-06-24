@@ -3,6 +3,7 @@ from .views import (
     CreateAnonymousUserView,
     AddUserTranslationView,
     UserTranslationsByUUID,
+    UserTranslationsByUUIDForWord,
 )
 
 urlpatterns = [
@@ -20,5 +21,10 @@ urlpatterns = [
         "user-translations-by-uuid/<uuid:uuid>/",
         UserTranslationsByUUID.as_view(),
         name="user-translations-by-uuid",
+    ),
+    path(
+        "user-translations-by-uuid-for-word/",
+        UserTranslationsByUUIDForWord.as_view(),
+        name="user-translations-by-uuid-for-word",
     ),
 ]
