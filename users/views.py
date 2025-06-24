@@ -20,7 +20,7 @@ class CreateAnonymousUserView(APIView):
         profile = user.profile  # Created via signal
 
         return Response(
-            {"user_id": user.id, "anonymous_id": str(profile.anonymous_id)},
+            {"user_id": user.id, "uuid": str(profile.uuid)},
             status=status.HTTP_201_CREATED,
         )
 
@@ -28,7 +28,7 @@ class CreateAnonymousUserView(APIView):
 class AddUserTranslationView(APIView):
     def post(self, request):
         # Query params
-        anonymous_id = request.query_params.get("anonymous_id")
+        user_uuid = request.query_params.get("uuid")
         word_text = request.query_params.get("word_text")
         translation_text = request.query_params.get("translation_text")
         source_language = request.query_params.get("source_language")
@@ -37,7 +37,7 @@ class AddUserTranslationView(APIView):
         # Validate input
         missing_fields = []
         for param in [
-            "anonymous_id",
+            "uuid",
             "word_text",
             "translation_text",
             "source_language",
@@ -56,7 +56,7 @@ class AddUserTranslationView(APIView):
 
         try:
             # Get user
-            profile = UserProfile.objects.get(anonymous_id=anonymous_id)
+            profile = UserProfile.objects.get(uuid=user_uuid)
             user = profile.user
 
             # Get languages
@@ -88,7 +88,7 @@ class AddUserTranslationView(APIView):
 
         except UserProfile.DoesNotExist:
             return Response(
-                {"error": "Invalid anonymous_id."}, status=status.HTTP_404_NOT_FOUND
+                {"error": "Invalid user uuid."}, status=status.HTTP_404_NOT_FOUND
             )
         except Language.DoesNotExist:
             return Response(
@@ -118,7 +118,7 @@ class AddUserTranslationView(APIView):
 class UserTranslationsByUUID(APIView):
     def get(self, request, uuid):
         try:
-            user_profile = UserProfile.objects.get(anonymous_id=uuid)
+            user_profile = UserProfile.objects.get(uuid=uuid)
         except UserProfile.DoesNotExist:
             return Response(
                 {"error": "User with this UUID was not found."},
@@ -132,7 +132,7 @@ class UserTranslationsByUUID(APIView):
 
 class UserTranslationsByUUIDForWord(APIView):
     def get(self, request):
-        uuid = request.query_params.get("uuid")
+        user_uuid = request.query_params.get("uuid")
         source_language = request.query_params.get("source_language")
         target_language = request.query_params.get("target_language")
         word = request.query_params.get("word")
@@ -146,7 +146,7 @@ class UserTranslationsByUUIDForWord(APIView):
             )
 
         try:
-            user_profile = UserProfile.objects.get(anonymous_id=uuid)
+            user_profile = UserProfile.objects.get(uuid=user_uuid)
         except UserProfile.DoesNotExist:
             return Response(
                 {"error": "User with this UUID was not found."},

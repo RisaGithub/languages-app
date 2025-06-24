@@ -18,13 +18,13 @@ class TestCreateAnonymousUserView(TestCase):
 
         data = response.json()
         self.assertIn("user_id", data)
-        self.assertIn("anonymous_id", data)
+        self.assertIn("uuid", data)
 
         # Validate the user was actually created
         user = User.objects.get(id=data["user_id"])
         self.assertIsNotNone(user)
-        self.assertEqual(user.username, data["anonymous_id"])
+        self.assertEqual(user.username, data["uuid"])
 
         # Validate the associated profile exists
         profile = UserProfile.objects.get(user=user)
-        self.assertEqual(str(profile.anonymous_id), data["anonymous_id"])
+        self.assertEqual(str(profile.uuid), data["uuid"])

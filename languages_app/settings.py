@@ -72,7 +72,11 @@ WSGI_APPLICATION = "languages_app.wsgi.application"
 DATABASES = {
     "default": dj_database_url.parse(
         "postgresql://languages_db_narh_user:jWtkCoDVjBMBDCBtJXBmTmrlvaDyATMf@dpg-d159ahre5dus739dlaf0-a.oregon-postgres.render.com/languages_db_narh"
-    )
+    ),
+    "test": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": ":memory:",
+    },
 }
 
 
@@ -117,8 +121,11 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-if "test" in sys.argv:
-    DATABASES["default"] = {
+
+import sys
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": ":memory:",  # or a temporary file if you want persistence
+        "NAME": ":memory:",
     }

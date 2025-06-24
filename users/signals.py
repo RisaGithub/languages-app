@@ -8,7 +8,7 @@ from .models import UserProfile
 def create_user_profile_and_set_username(sender, instance, created, **kwargs):
     if created:
         profile = UserProfile.objects.create(user=instance)
-        new_username = str(profile.anonymous_id)
+        new_username = str(profile.uuid)
 
         if instance.username != new_username:
             instance.username = new_username
