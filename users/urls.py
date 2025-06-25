@@ -4,6 +4,7 @@ from .views import (
     AddUserTranslationView,
     UserTranslationsByUUID,
     UserTranslationsByUUIDForWord,
+    DeleteUserTranslationView,
 )
 
 urlpatterns = [
@@ -16,6 +17,11 @@ urlpatterns = [
         "add-translation/",
         AddUserTranslationView.as_view(),
         name="add_user_translation",
+    ),
+    path(
+        "delete-translation/",
+        DeleteUserTranslationView.as_view(),
+        name="delete_user_translation",
     ),
     path(
         "user-translations-by-uuid/<uuid:uuid>/",

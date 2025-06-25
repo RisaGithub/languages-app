@@ -34,10 +34,16 @@ def available_routes_view(request):
             "route_example": f"{base_url}/api/users/user-translations-by-uuid-for-word/?uuid=742c7560-9079-4f35-8c10-43dd1996b312&word=hello&source_language=en&target_language=ru",
         },
         {
-            "name": "Добавить слово-перевод в словарь юзера",
+            "name": "Добавить перевод в словарь юзера",
             "method": "POST",
             "route_template": "/api/users/add-translation/?uuid=...&word_text=...&translation_text=...&source_language=...&target_language=...",
             "route_example": f"{base_url}/api/users/add-translation/?uuid=742c7560-9079-4f35-8c10-43dd1996b312&word_text=hello&translation_text=привет&source_language=en&target_language=ru",
+        },
+        {
+            "name": "Удалить перевод из словаря юзера",
+            "method": "POST",
+            "route_template": "/api/users/delete-translation/?uuid=...&word_text=...&translation_text=...&source_language=...&target_language=...",
+            "route_example": f"{base_url}/api/users/delete-translation/?uuid=742c7560-9079-4f35-8c10-43dd1996b312&word_text=hello&translation_text=привет&source_language=en&target_language=ru",
         },
     ]
 
