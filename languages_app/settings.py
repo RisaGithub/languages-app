@@ -71,7 +71,7 @@ WSGI_APPLICATION = "languages_app.wsgi.application"
 
 DATABASES = {
     "default": dj_database_url.parse(
-        "postgresql://languages_db_narh_user:jWtkCoDVjBMBDCBtJXBmTmrlvaDyATMf@dpg-d159ahre5dus739dlaf0-a.oregon-postgres.render.com/languages_db_narh"
+        "postgresql://languages_app_database_user:Qi6fb0oKkeniiVlb3CXV0KrEGDDyygqM@dpg-d2gbkjgdl3ps73f51nv0-a.oregon-postgres.render.com/languages_app_database"
     ),
     "test": {
         "ENGINE": "django.db.backends.sqlite3",
