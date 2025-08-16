@@ -9,7 +9,8 @@ psycopg2-binary
 
 # for HTTPS connection
 django-extensions
-werkzeug
+# werkzeug
 
 pyOpenSSL
+
 
