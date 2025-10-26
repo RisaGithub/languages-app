@@ -7,6 +7,9 @@ django-cors-headers
 dj-database-url 
 psycopg2-binary
 
+# image search API
+ddgs
+
 # for HTTPS connection
 django-extensions
 # werkzeug

@@ -32,6 +32,9 @@ INSTALLED_APPS = [
     "languages_app",
     "users",
     "words",
+    "images",
+    "pronunciations",
+    "definitions",
 ]
 
 MIDDLEWARE = [
@@ -70,9 +73,14 @@ WSGI_APPLICATION = "languages_app.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    "default": dj_database_url.parse(
-        "postgresql://languages_app_database_user:Qi6fb0oKkeniiVlb3CXV0KrEGDDyygqM@dpg-d2gbkjgdl3ps73f51nv0-a.oregon-postgres.render.com/languages_app_database"
-    ),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'languages_app',
+        'USER': 'django_user',
+        'PASSWORD': '12345',
+        'HOST': '127.0.0.1',
+        'PORT': '5433',
+    },
     "test": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": ":memory:",
